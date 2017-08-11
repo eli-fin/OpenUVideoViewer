@@ -1,0 +1,12 @@
+# This is a comment
+
+# This file will hold program configurations
+# 	Each line is <key>:<value>
+#	Multiline values not allowed
+#	Spaces befoer/after keys/values will be ignored
+#	If a key is repeated, the last one will override
+
+username	:	<username_here>
+password	:	<password_here>
+student_id	:	<id_here>
+
