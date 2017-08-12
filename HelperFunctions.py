@@ -22,10 +22,10 @@ class HelperFunctions(object):
 
         # Config file format:
         #   Line beginning with a # is a comment
-        # 	Each line is <key>:<value>
-        #	Multiline values not allowed
-        #	Spaces befoer/after keys/values will be ignored
-        #	If a key is repeated, the last one will override
+        #   Each line is <key>:<value>
+        #   Multiline values not allowed
+        #   Spaces befoer/after keys/values will be ignored
+        #   If a key is repeated, the last one will override
 
         if cls.config is None:
             try:
