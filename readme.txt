@@ -49,3 +49,4 @@
 - implement __str__ for data classes to make debuggin easier
 - more error handling
 - deal with pylint errors (there's a ton!)
+- add hello <name> on screen, according to logged in user
