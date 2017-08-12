@@ -1,7 +1,9 @@
-# Written in July 2017
+﻿# Written in July 2017
 
 # Usage instructions
     This program will allow you to browse through the courses, playlists and videos.
+	Note: unsupported courses (who either have no videos or are in an older format)
+	      will have NULL as their course number (in brackets) and cannot be viewed.
     Video links will be shown when clicked and can be copied (or opened in browser)
     Videos can also be exported to an HTML file, which will be saved in user downloads folder
     Username, password and ID should configured in config file. (I'ts just a text file)
