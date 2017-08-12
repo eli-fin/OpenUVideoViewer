@@ -8,7 +8,7 @@
     Videos can also be exported to an HTML file, which will be saved in user downloads folder
     Username, password and ID should configured in config file. (I'ts just a text file)
 
-	There's a screenshot of the main screen in the wiki (from the images folder)
+    There's a screenshot of the main screen in the wiki (from the images folder)
 
 # Dependencies
     Tkinter is used as GUI in this app. So with linux, you need to install TK, which is what tkinter uses internally.
