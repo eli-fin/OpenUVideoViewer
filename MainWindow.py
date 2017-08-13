@@ -8,6 +8,7 @@ except ImportError:
     import tkinter as TK #py3
 from threading import Thread
 from GuiLib import GuiLib
+from HtmlLayer import HtmlHandler
 from HelperFunctions import cross_platform_hebrew
 from HelperFunctions import open_link_in_browser
 from HelperFunctions import export_to_html
@@ -32,6 +33,13 @@ class MainWindow(object):
         self.video_link_box = None
 
         self.helper_lib = GuiLib(self)
+
+        #===================== Hello msg begin
+        hello_msg = TK.Label(self.root,
+                             text=cross_platform_hebrew(u'שלום ' + HtmlHandler.get_student_name())+
+                                  '\n--------------------------')
+        hello_msg.pack(side=TK.TOP,anchor=TK.NE, padx=padding)
+        #===================== Hello msg end
 
         #===================== Course frame begin
         course_frame = TK.LabelFrame(self.root,
