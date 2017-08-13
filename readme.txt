@@ -8,6 +8,9 @@
     Videos can also be exported to an HTML file, which will be saved in user downloads folder
     Username, password and ID should configured in config file. (I'ts just a text file)
 
+    Once you have the direct links (or if you export them to HTML),
+    they can be used without logging in.
+
     There's a screenshot of the main screen in the wiki (from the images folder)
 
 # Dependencies
