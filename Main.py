@@ -13,4 +13,14 @@ def main():
         MainWindow()
 
 if __name__ == '__main__':
-    exit(main())
+    try:
+        exit(main())
+    except Exception as err:
+        # Try to show the error in a gui message,
+        # otherwise, rethrow the original error.
+        # This won't work for exceptions raised within other threads.
+        try:
+            from GuiLib import GuiLib
+            GuiLib.show_error("Unknown error:\n" + str(err))
+        except:
+            raise err
