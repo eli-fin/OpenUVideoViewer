@@ -42,7 +42,7 @@ class HelperFunctions(object):
 
             except Exception as err:
                 from GuiLib import GuiLib
-                GuiLib.show_error('Error parsing config file\n(' + err.args + ')')
+                GuiLib.show_error('Error parsing config file\n(' + str(err.args) + ')')
 
     @classmethod
     def set_login_info(cls):
