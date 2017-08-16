@@ -51,7 +51,7 @@
     Hebrew on linux might look a little weirder, as it's inversed (to simulate RTL)
 
 # Known bugs
-    --
+    If you keep getting an error while getting the information, it could be because your internet is filtered.
 
 # TODO LIST
 - implement __str__ for data classes to make debuggin easier
