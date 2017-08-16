@@ -58,3 +58,8 @@
 - more error handling
 - deal with pylint errors (there's a ton!)
 
+# Disclaimer
+    I'm not responsible for anything. Anything you do or that happens that is in any way
+    related or caused by this program is the users responsibility.
+    In addition, the use of this program is subject to the Israeli OpenUs' license for the user
+    and can be used for what the user is allowed to do.
