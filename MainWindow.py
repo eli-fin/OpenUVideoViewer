@@ -187,7 +187,7 @@ class MainWindow(object):
                 int(self.helper_lib.current_playlist_index) - 1)).start()
 
         export_html_button = TK.Button(video_frame,
-                                       text='HTML ' + cross_platform_hebrew(u'יצוא לינקים ל'),
+                                       text='HTML ' + cross_platform_hebrew(u'יצוא כל הלינקים ל'),
                                        command=export_videos)
         export_html_button.pack(side=TK.TOP, anchor=TK.E)
         #===================== HTML export button end
