@@ -1,8 +1,11 @@
-﻿# Written in July 2017
+# Written in July 2017
 
 # Usage instructions
     This program will allow you to browse through the courses, playlists and videos.
-    Note: unsupported courses (who either have no videos or are in an older format)
+    
+    To run the application, just run the Main.py file.
+    
+    Note: unsupported courses (who either have no videos or are in an older format)
           will have NULL as their course number (in brackets) and cannot be viewed.
     Video links will be shown when clicked and can be copied (or opened in browser)
     Videos can also be exported to an HTML file, which will be saved in user downloads folder
@@ -54,4 +57,4 @@
 - implement __str__ for data classes to make debuggin easier
 - more error handling
 - deal with pylint errors (there's a ton!)
-- add hello <name> on screen, according to logged in user
+
