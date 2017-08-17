@@ -119,7 +119,7 @@ def export_to_html(course_info, playlist_index):
 
     try:
         import io # for py2 utf-8 compatibility
-        html_template = io.open('_html_export_tepmlate_.html', encoding='utf-8').read()
+        html_template = io.open('resources/_html_export_tepmlate_.html', encoding='utf-8').read()
     except Exception:
         GuiLib.show_error('Can\'t open html template file')
 
