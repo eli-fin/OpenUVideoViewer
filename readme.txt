@@ -54,11 +54,9 @@
     If you keep getting an error while getting the information, it could be because your internet is filtered.
 
 # TODO LIST
-- fix program and modules structure (there are some circular imports)
 - change readme to md file and match githubs format
 - implement __str__ for data classes to make debuggin easier
 - more error handling
-- deal with pylint errors (there's a ton!)
 
 # Disclaimer
     I'm not responsible for anything. Anything you do or that happens that is in any way

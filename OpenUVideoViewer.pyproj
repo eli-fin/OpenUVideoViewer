@@ -23,26 +23,26 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DataClasses.py">
+    <Compile Include="modules\DataClasses.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GlobalVars.py">
+    <Compile Include="modules\GlobalVars.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GuiLib.py">
+    <Compile Include="modules\GuiLib.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HelperFunctions.py">
+    <Compile Include="modules\HelperFunctions.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="HtmlLayer.py">
+    <Compile Include="modules\HtmlLayer.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Main.py" />
-    <Compile Include="MainWindow.py">
+    <Compile Include="modules\MainWindow.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NetworkLayer.py">
+    <Compile Include="modules\NetworkLayer.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />
+    <Folder Include="modules\" />
     <Folder Include="resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
