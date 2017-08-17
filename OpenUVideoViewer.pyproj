@@ -48,7 +48,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="config" />
+    <Content Include="images\exported_html_example.jpg" />
+    <Content Include="images\main_screen.jpg" />
     <Content Include="readme.txt" />
+    <Content Include="resources\_html_export_tepmlate_.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="images\" />
+    <Folder Include="resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
