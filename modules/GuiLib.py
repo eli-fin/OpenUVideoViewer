@@ -62,7 +62,6 @@ class GuiUpdater(object): # pylint: disable=too-many-instance-attributes
         self.video_listbox = None
         self.video_link_box = None
         self.all_courses = None
-        self.video_link_box = None
 
     def __setup(self):
         """ This is to setup the class. Every class method should call it at first
@@ -204,7 +203,7 @@ class GuiUpdater(object): # pylint: disable=too-many-instance-attributes
 
         # Prepare for updating
         self.current_video_index = new_video_index
-        self.video_link_box.delete(0, TK.END)
+        self.video_link_box._str_var.set('')
 
         # Update
         current_video =\
@@ -215,14 +214,61 @@ class GuiUpdater(object): # pylint: disable=too-many-instance-attributes
             cross_platform_hebrew(u'לינק ישיר - ') +\
             cross_platform_hebrew(current_video.title) + ' - ' +\
             cross_platform_hebrew(current_video.instructor_name) + ' - ' + current_video.record_date
-        self.video_link_box.insert(0, current_video.video_link)
+        self.video_link_box._str_var.set(current_video.video_link)
 
     def reset_link_box(self):
         """ This will reset the video link box """
         self.__setup()
 
-        self.video_link_box.delete(0, TK.END)
+        self.video_link_box._str_var.set('')
         self.video_link_box.master['text'] = cross_platform_hebrew(u'לינק ישיר')
+        
+def get_quality_choice(root, choices):
+    """ Return a quality choice """
+
+    CHOICE_INVALID = -1
+
+    win=TK.Toplevel(root)
+    win.title('')
+
+    win.grab_set()
+
+    # Init as invalid
+    val = TK.IntVar()
+    val.set(CHOICE_INVALID)
+
+    TK.Label(win, text='Choose one of the following qualities:').pack(side=TK.TOP)
+    # Add frame(Radiobutton) for each choice
+    for i, choice in enumerate(choices):
+        frame=TK.Frame(win, highlightthickness=1, highlightbackground='grey')
+        frame.pack(fill=TK.X, padx=6, pady=3)
+        TK.Radiobutton(frame, text=choice, value=i, variable=val, command=lambda:win.destroy()).pack(side=TK.LEFT)
+
+    
+    # Update window, so win.geometry() is up to date
+    win.update_idletasks()
+    # Position window a litle to the top left of parent
+    # (Only do this after all elemtnes were filled, so window sized is auto-managed)
+    rootX, rootY = [int(x) for x in root.geometry().split('+')[-2:]]
+    newXY = str(rootX-100) + '+' + str(rootY-50)
+    curSize = win.geometry().split('+')[0]
+    win.geometry(curSize + '+' + newXY)
+    # Update again, to make sure everything took effect before continuing
+    win.update_idletasks()
+
+    # Wait for choice
+    win.lift()
+    win.wait_window()
+
+    # Return to parent
+    root.grab_set()
+    root.lift()
+
+    # Nothing chosen
+    if val.get() == CHOICE_INVALID:
+        return None
+    return val.get()
+
 
 def show_error(error_msg):
     """ Show a window message with the error and exit """

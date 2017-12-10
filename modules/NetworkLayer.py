@@ -61,6 +61,13 @@ class NetworkHandler(object):
         except Exception: # pylint: disable=broad-except
             GuiLib.show_error('Can\'t get info. Connection problem.')
 
+    def get_page_bytes(self, link):
+        """ Return bytes of given link within session """
+        try:
+            return self.__session.get(link).content
+        except Exception: # pylint: disable=broad-except
+            GuiLib.show_error('Can\'t get bytes. Connection problem.')
+
     def post_page(self, link, data=None, headers=None):
         """ Return html of given link within session """
         try:

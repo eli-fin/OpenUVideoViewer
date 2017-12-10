@@ -17,4 +17,4 @@ LOGON_FIRST_PAGE = 'https://sso.apps.openu.ac.il/SheiltaPortalLogin'\
 LOGON_SECOND_PAGE = 'https://sso.apps.openu.ac.il/SheiltaPortalProcess'
 
 # Links for data extraction
-MAIN_PAGE_LINK = 'http://opal.openu.ac.il/my/'
+MAIN_PAGE_LINK = 'https://opal.openu.ac.il/my/'

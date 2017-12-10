@@ -23,35 +23,22 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="modules\DataClasses.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="modules\GlobalVars.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="modules\GuiLib.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="modules\HelperFunctions.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="modules\HtmlLayer.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Main.py" />
-    <Compile Include="modules\MainWindow.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="modules\NetworkLayer.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="modules\DataClasses.py" />
+    <Compile Include="modules\DownloadWindow.py" />
+    <Compile Include="modules\GlobalVars.py" />
+    <Compile Include="modules\GuiLib.py" />
+    <Compile Include="modules\HelperFunctions.py" />
+    <Compile Include="modules\HtmlLayer.py" />
+    <Compile Include="modules\M3u8Downloader.py" />
+    <Compile Include="modules\MainWindow.py" />
+    <Compile Include="modules\NetworkLayer.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config" />
     <Content Include="images\exported_html_example.jpg" />
     <Content Include="images\main_screen.jpg" />
     <Content Include="readme.txt" />
-    <Content Include="resources\_html_export_tepmlate_.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />

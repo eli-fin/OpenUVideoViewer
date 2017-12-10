@@ -12,7 +12,10 @@ import GuiLib
 import HtmlLayer
 from HelperFunctions import cross_platform_hebrew
 from HelperFunctions import open_link_in_browser
-from HelperFunctions import export_to_html
+from HelperFunctions import get_download_folder
+from HelperFunctions import get_legal_filename
+from HelperFunctions import get_free_filename
+from DownloadWindow import start_download_window
 
 class MainWindow(object): # pylint: disable=too-few-public-methods
     """ main gui window """
@@ -65,7 +68,7 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
 
         # Bind clicks to update playlist_updater
         def playlist_updater(event): # pylint: disable=unused-argument
-            """ Method for click action """
+            """ Callback for click action """
             curr_selection = self.course_list.curselection()
             # Check if anything is selected
             if curr_selection == ():
@@ -103,7 +106,7 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
 
         # Bind clicks to video_updater
         def video_updater(event): # pylint: disable=unused-argument
-            """ Method for click action """
+            """ Callback for click action """
             curr_selection = self.playlist_list.curselection()
             # Check if anything is selected
             if curr_selection == ():
@@ -134,7 +137,7 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
 
         # Bind clicks update link_box text
         def video_linkbox_updater(event): # pylint: disable=unused-argument
-            """ Method for click action """
+            """ Callback for click action """
             curr_selection = self.video_list.curselection()
             # Check if anything is selected
             if curr_selection == ():
@@ -149,9 +152,15 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
         video_link_frame = TK.LabelFrame(video_frame,
                                          text=cross_platform_hebrew(u'לינק ישיר'),
                                          padx=padding, pady=padding, labelanchor=TK.NE)
-        self.video_link_box = TK.Entry(video_link_frame, width=100)
+        str_var = TK.StringVar() # Binding variable
+        self.video_link_box = TK.Entry(video_link_frame,
+                                       width=100,
+                                       state="readonly",
+                                       textvariable=str_var,
+                                       readonlybackground='white')
+        self.video_link_box._str_var = str_var # Save for easy access
         def link_copy_action():
-            """ Method for click action """
+            """ Callback for click action """
             self.root.clipboard_clear()
             self.root.clipboard_append(self.video_link_box.get())
         video_link_button = TK.Button(video_link_frame,
@@ -163,10 +172,30 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
         video_link_frame.pack(side=TK.TOP, padx=padding, pady=padding)
         #===================== Video link frame end
 
+        #===================== Download button begin
+        def download_video():
+            """ Callback for click action """
+            video_link = self.video_link_box.get().strip()
+            if video_link:
+                # Extract video name and add extension
+                video_file_name = video_link.split('/')[6].replace('_mp4', '.mp4')
+                # Prepend downloads folder and make sure filename is legal and available
+                video_file_name = get_free_filename(
+                    get_download_folder() +
+                    get_legal_filename(video_file_name))
+
+                start_download_window(self.root, video_link, video_file_name)
+
+        video_link_button = TK.Button(video_frame,
+                                      text=cross_platform_hebrew(u'הורדה'),
+                                      command=download_video)
+        video_link_button.pack(side=TK.TOP, anchor=TK.E)
+        #===================== Download button end
+
         #===================== Open in browser button begin
         # This will only work in windows
         def open_video():
-            """ Method for click action """
+            """ Callback for click action """
             open_link_in_browser(self.video_link_box.get().strip())
 
         video_link_button = TK.Button(video_frame,
@@ -174,25 +203,6 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
                                       command=open_video)
         video_link_button.pack(side=TK.TOP, anchor=TK.E)
         #===================== Open in browser button end
-
-        #===================== HTML export button begin
-        # This will only work in windows
-        def export_videos():
-            """ Method for click action """
-            # Check if there are any videos
-            if self.video_list.size() == 0:
-                GuiLib.show_notice('No videos found :-(\nTry clicking on a playlist')
-                return
-
-            Thread(target=lambda: export_to_html(
-                self.helper_lib.all_courses[int(self.helper_lib.current_course_index) - 1],
-                int(self.helper_lib.current_playlist_index) - 1)).start()
-
-        export_html_button = TK.Button(video_frame,
-                                       text='HTML ' + cross_platform_hebrew(u'יצוא כל הלינקים ל'),
-                                       command=export_videos)
-        export_html_button.pack(side=TK.TOP, anchor=TK.E)
-        #===================== HTML export button end
 
         # I did this to avoid the warning (in the console)
         # when closing the app and a non-main thread is running tk

@@ -10,7 +10,6 @@ from re import sub
 from os import name as os_name
 from os import environ
 from os import path
-from lxml import html
 import GlobalVars
 import GuiLib
 
@@ -107,63 +106,3 @@ def open_link_in_browser(link):
             startupinfo=start_info)
     else:
         webbrowser.open(link)
-
-EXPORT_MUTEX = Lock()
-def export_to_html(course_info, playlist_index):
-    """ This function will export a playlist to a formatted html """
-
-    # This could take some time, because of the lazy loading of the video links
-    GuiLib.show_notice('Starting to generate\nThis might take a moment'
-                       ' (depending on the number of videos)')
-
-    try:
-        # io is used for py2 utf-8 compatibility
-        html_template = io.open('resources/_html_export_tepmlate_.html', encoding='utf-8').read()
-    except Exception: # pylint: disable=broad-except
-        GuiLib.show_error('Can\'t open html template file')
-
-    # Set basic info, which can be done by simple replacing instead of parsing
-    html_template =\
-        html_template.replace('_course_title_', course_info.name + ' ' + course_info.semester)
-    html_template =\
-        html_template.replace('_course_name_', course_info.name + ' ' +
-                              course_info.semester + ' (' + course_info.course_number + ')')
-    html_template = html_template.replace('_course_page_link_', course_info.link)
-    html_template = html_template.replace('_playlist_name_',
-                                          course_info.playlist_list[playlist_index].title)
-
-    # Parse page, get base (template element), remove it and use it to create new elements
-    html_obj = html.fromstring(html_template)
-    video_base_element = html_obj.get_element_by_id('video_container')
-    video_base_element_text = html.tostring(video_base_element, encoding='unicode')
-    video_container = video_base_element.getparent()
-    video_container.remove(video_base_element)
-
-    # Insert all the videos
-    for video_info in course_info.playlist_list[playlist_index].video_list:
-        # Reset
-        video_element_text = video_base_element_text
-        # Replacements
-        video_element_text = video_element_text.replace('_video_title_', video_info.title)
-        video_element_text = video_element_text.replace('_thumb_link_', video_info.thumb_link)
-        video_element_text =\
-            video_element_text.replace('_instructor_name_', video_info.instructor_name)
-        video_element_text = video_element_text.replace('_record_date_', video_info.record_date)
-        video_element_text =\
-            video_element_text.replace('_video_download_link_', video_info.video_link)
-        video_container.append(html.fromstring(video_element_text))
-
-    # Save file (this part is mutexes, to avoid complications)
-    EXPORT_MUTEX.acquire()
-    try:
-        # Get file name
-        file_name = 'OpenU course #' + course_info.course_number + '.html'
-        folder = get_download_folder()
-        full_file_name = get_free_filename(folder + file_name)
-        io.open(full_file_name, 'w', encoding='utf-8').\
-            write(html.tostring(html_obj, encoding='unicode'))
-        GuiLib.show_notice('File "' + full_file_name.split('/')[-1].split('\\')[-1].
-                           rsplit('.', 1)[0] + '" created in folder "' + folder + '"')
-    except Exception as err: # pylint: disable=broad-except
-        GuiLib.show_error('Error generating file\n' + str(err.args))
-    EXPORT_MUTEX.release()

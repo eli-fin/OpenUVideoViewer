@@ -53,15 +53,13 @@ class HtmlHandler(object):
         # Current semester courses
         courses_nodes = tree.get_element_by_id('navbar').find('li/ul').findall('li/a[@title]')
         # Previous courses
-        courses_nodes += tree.get_element_by_id('navbar').find('li/ul')\
-            .findall('li[@class]/ul/li/a[@title]')
+        courses_nodes += tree.get_element_by_id('navbar').find('.//ul[@class="dropdown-menu"]')\
+            .findall('li/a[@title]')
 
         for course_node in courses_nodes:
             course = DataClasses.CourseInfo()
-            course.name = course_node.find('div/div[@class=\'mycoursefullname\']')\
-                          .text_content().strip()
-            course.semester = course_node.find('div/div[@class=\'mycoursesemester\']')\
-                              .text_content().strip()
+            course.name = course_node.text_content().split('(')[0].strip()
+            course.semester = course_node.text_content().split(course.name)[1].strip()
             course.link = course_node.attrib['href']
             course_list.append(course)
 
@@ -76,9 +74,10 @@ class HtmlHandler(object):
         tree = html.fromstring(cls.__net.get_page(course_page_link))
         # This was added to deal with course pages that have no link to video page
         try:
-            return (tree.get_element_by_id('quicklink3')[0].attrib['href'],
-                    tree.get_element_by_id('openuheader')[1][0][1][0][0]
-                    .text_content().split(' - ')[1])
+            return ([link.attrib['href']
+                     for link in tree.get_element_by_id('quicklinks_panel').findall('.//a')
+                     if link.attrib['href'].startswith('https://opal.openu.ac.il/mod/ouilvideocollection/view.php')][0],
+                    tree.find('.//h1[@class="coursename_header"]').text_content().split(' - ')[1])
         except Exception: # pylint: disable=broad-except
             return "", 'NULL'
 
@@ -116,7 +115,7 @@ class HtmlHandler(object):
 
         # Get div with all videos
         videos_div = cls.__net.post_page(
-            'http://opal.openu.ac.il/mod/ouilvideocollection/actions.php',
+            'https://opal.openu.ac.il/mod/ouilvideocollection/actions.php',
             data={
                 'cid':curr_playlist_info.c_value,
                 'action':'getcollection',
@@ -151,7 +150,7 @@ class HtmlHandler(object):
         cls.setup()
 
         req1 = cls.__net.post_page(
-            'http://opal.openu.ac.il/mod/ouilvideocollection/actions.php',
+            'https://opal.openu.ac.il/mod/ouilvideocollection/actions.php',
             data={
                 'action': 'getplaylist',
                 'context': curr_playlist_info.cid,
@@ -163,23 +162,5 @@ class HtmlHandler(object):
         # Note: This json has a lot of info about the video properties and lesson info
         response = eval(req1.replace('true', 'True'). # pylint: disable=eval-used
                         replace('false', 'False').replace('null', 'None'))
-        cdnid = response['cdnid']
 
-        # Get video link (the ie9 part is needed, or a more complicated response,
-        # ultimately leeding to an m3u8 file is returned)
-        # This also has some basic info about video file
-        req2 = cls.__net.get_page('http://opal.openu.ac.il/local/ouil_video/player.php?mediaid='
-                                  + cdnid + '&ie9=1')
-        # Response html for some reason has '//\' in all closing tags.
-        # This data contains a few video quality links (usually 4, it seems)
-        # I will extract the standard one
-        # (It appears in a seperate place It's usually the third best).
-        html_data = html.fromstring(eval(req2)['html'].replace('\\/', '/')) # pylint: disable=eval-used
-
-        # This is the base video link, which leads to a redirector api
-        tmp_link = html_data.find('video/source').attrib['src']
-        # The network_layer doesn't provide this function, and I only need it here,
-        # and also this doesn't require the session, so I just did it here.
-        link = requests.get(tmp_link, allow_redirects=False).headers['location']
-
-        return link
+        return 'https://api.bynetcdn.com/Redirector/openu/manifest/' + response['media']['ar'] + '_mp4/HLS/playlist.m3u8'
