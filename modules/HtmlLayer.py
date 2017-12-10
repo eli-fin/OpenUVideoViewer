@@ -66,8 +66,8 @@ class HtmlHandler(object):
         return course_list
 
     @classmethod
-    def get_video_page_link_and_number(cls, course_page_link):
-        """ Return video page link and course number for course page link in a tupple """
+    def get_video_pages_links_and_number(cls, course_page_link):
+        """ Return video pages links and course number for course page link in a tupple """
 
         cls.setup()
 
@@ -76,13 +76,13 @@ class HtmlHandler(object):
         try:
             return ([link.attrib['href']
                      for link in tree.get_element_by_id('quicklinks_panel').findall('.//a')
-                     if link.attrib['href'].startswith('https://opal.openu.ac.il/mod/ouilvideocollection/view.php')][0],
+                     if link.attrib['href'].startswith('https://opal.openu.ac.il/mod/ouilvideocollection/view.php')],
                     tree.find('.//h1[@class="coursename_header"]').text_content().split(' - ')[1])
         except Exception: # pylint: disable=broad-except
             return "", 'NULL'
 
     @classmethod
-    def get_playlist_list(cls, course_video_page_link, course_id):
+    def get_playlist_list(cls, course_video_pages_links, course_id):
         """ This will return a list of PlaylistInfo objects found on the course video page
             course_id is needed to store it also in PlaylistInfo """
 
@@ -90,17 +90,18 @@ class HtmlHandler(object):
 
         playlist_list = []
 
-        tree = html.fromstring(cls.__net.get_page(course_video_page_link))
-        playlist_nodes = tree.get_element_by_id('ovc_collections_list').iter('li')
+        for page_link in course_video_pages_links:
+            tree = html.fromstring(cls.__net.get_page(page_link))
+            playlist_nodes = tree.get_element_by_id('ovc_collections_list').iter('li')
 
-        for playlist_node in playlist_nodes:
-            playlist = DataClasses.PlaylistInfo()
-            playlist.title = playlist_node.find('a/span[@data-title]').text_content()
-            playlist.c_value = playlist_node.find('a').attrib['c-value']
-            playlist.cid = playlist_node.find('a').attrib['cid']
-            playlist.mid = playlist_node.find('a').attrib['mid']
-            playlist.course_id = course_id
-            playlist_list.append(playlist)
+            for playlist_node in playlist_nodes:
+                playlist = DataClasses.PlaylistInfo()
+                playlist.title = playlist_node.find('a/span[@data-title]').text_content()
+                playlist.c_value = playlist_node.find('a').attrib['c-value']
+                playlist.cid = playlist_node.find('a').attrib['cid']
+                playlist.mid = playlist_node.find('a').attrib['mid']
+                playlist.course_id = course_id
+                playlist_list.append(playlist)
 
         return playlist_list
 

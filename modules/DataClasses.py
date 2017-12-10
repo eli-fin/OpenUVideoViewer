@@ -10,7 +10,7 @@ class CourseInfo(object): # pylint: disable=too-many-instance-attributes
         self._name = None
         self._semester = None
         self._link = None
-        self._video_page_link = None
+        self._video_pages_links = None
         self._course_number = None
         self._id = None
         self._playlist_list = None
@@ -45,27 +45,28 @@ class CourseInfo(object): # pylint: disable=too-many-instance-attributes
         """ Setter """
         self._link = value
 
-    # Link to course video page
+    # Tupple of links to course video pages
+    # (Some courses have more than one video page)
     @property
-    def video_page_link(self):
+    def video_pages_links(self):
         """ Getter """
         # Lazy loading implementation (both values loading are tied)
-        if self._video_page_link is None:
-            self._video_page_link, self._course_number =\
-                HtmlLayer.HtmlHandler.get_video_page_link_and_number(self.link)
-        return self._video_page_link
-    @video_page_link.setter
-    def video_page_link(self, value):
+        if self._video_pages_links is None:
+            self._video_pages_links, self._course_number =\
+                HtmlLayer.HtmlHandler.get_video_pages_links_and_number(self.link)
+        return self._video_pages_links
+    @video_pages_links.setter
+    def video_pages_links(self, value):
         """ Setter """
-        self._video_page_link = value
+        self._video_pages_links = value
 
     @property
     def course_number(self):
         """ Getter """
         # Lazy loading implementation (both values loading are tied)
         if self._course_number is None:
-            self._video_page_link, self._course_number = \
-                HtmlLayer.HtmlHandler.get_video_page_link_and_number(self.link)
+            self._video_pages_links, self._course_number = \
+                HtmlLayer.HtmlHandler.get_video_pages_links_and_number(self.link)
         return self._course_number
     @course_number.setter
     def course_number(self, value):
@@ -89,7 +90,7 @@ class CourseInfo(object): # pylint: disable=too-many-instance-attributes
         # Lazy loading implementation
         if self._playlist_list is None:
             self._playlist_list = \
-                HtmlLayer.HtmlHandler.get_playlist_list(self.video_page_link, self.id)
+                HtmlLayer.HtmlHandler.get_playlist_list(self.video_pages_links, self.id)
         return self._playlist_list
     @playlist_list.setter
     def playlist_list(self, value):
