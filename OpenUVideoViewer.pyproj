@@ -37,7 +37,7 @@
   <ItemGroup>
     <Content Include="config" />
     <Content Include="images\main_screen.jpg" />
-    <Content Include="readme.txt" />
+    <Content Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="images\" />
