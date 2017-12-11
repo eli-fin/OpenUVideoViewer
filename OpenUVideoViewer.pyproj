@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="config" />
-    <Content Include="images\exported_html_example.jpg" />
     <Content Include="images\main_screen.jpg" />
     <Content Include="readme.txt" />
   </ItemGroup>
