@@ -12,7 +12,7 @@ Some players might not handle this type of file very well, meaning they will not
 (HTML no longer available, since I could not find an MP4 direct link)
 - Username, password and ID should configured in config file. (I'ts just a plain text file)
 
-- unsupported courses (who either have no videos or are in an older format)
+- Unsupported courses (which either have no videos or are in an older format)
 will have NULL as their course number (in brackets) and cannot be viewed.
 
 - There's a screenshot of the main screen in the wiki (from the images folder)
