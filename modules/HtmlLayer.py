@@ -26,9 +26,11 @@ class HtmlHandler(object):
         cls.__main_page = cls.__net.get_page(GlobalVars.MAIN_PAGE_LINK)
 
         # Check if login was successful
-        # (The search term is a JS function which only appears if login failed)
-        if cls.__main_page.find('CHECK_VALID()') != -1:
-            GuiLib.show_error('Login error')
+        # (The search term is a JS function which only appears if login failed,
+        #  or if the login div is there)
+        if 'CHECK_VALID()'   in cls.__main_page or \
+           '<div id="login"' in cls.__main_page:
+            GuiLib.show_error('Login error. Check the config file.')
 
     @classmethod
     def get_student_name(cls):
