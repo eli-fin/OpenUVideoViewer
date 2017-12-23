@@ -41,10 +41,10 @@ class HelperFunctions(object):
                 for line in config_lines:
                     cls.config[line.split(':')[0].strip()] = line.split(':')[1].strip()
 
-                return cls.config
-
             except Exception as err: # pylint: disable=broad-except
                 GuiLib.show_error('Error parsing config file\n(' + str(err.args) + ')')
+
+        return cls.config
 
     @classmethod
     def set_login_info(cls):
