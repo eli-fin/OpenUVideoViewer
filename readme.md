@@ -10,7 +10,7 @@ Some players might not handle this type of file very well, meaning they will not
 - Video links will be shown when clicked and can be copied (or opened in browser)
 ~~Videos can also be exported to an HTML file, which will be saved in user downloads folder~~
 (HTML no longer available, since I could not find an MP4 direct link)
-Username, password and ID should configured in config file. (I'ts just a plain text file)
+- Username, password and ID should configured in config file. (I'ts just a plain text file)
 
 - unsupported courses (who either have no videos or are in an older format)
 will have NULL as their course number (in brackets) and cannot be viewed.
