@@ -2,6 +2,8 @@
 
 """ Network handling module """
 
+from time import sleep
+from threading import Thread
 import requests
 import GlobalVars
 import GuiLib
@@ -9,7 +11,9 @@ from HelperFunctions import HelperFunctions
 
 class NetworkHandler(object):
     """ This singletone class will handle all network interactions """
-
+    
+    # Set refresh minutes
+    SESSION_REFRESH_INTERVAL_MIN = 15
     __instance = None
 
     def __init__(self):
@@ -38,7 +42,7 @@ class NetworkHandler(object):
         # when clicking on the 'כניסה' button with the login fields.
         # The url must include the vars and a 'cookies_enabled' cookie will be returns
         # and used for the next step.
-        self.get_page(GlobalVars.LOGON_FIRST_PAGE)
+        req1 = self.get_page(GlobalVars.LOGON_FIRST_PAGE)
 
         # This is the second step.
         # This is the request made by the previous form's submit.
@@ -48,11 +52,19 @@ class NetworkHandler(object):
         #   is the 'cookies_enabled' one, or an 'cookies not supported' error will show.
         #   Also, I've made successful requests (without a session) using only the cookies
         #   returened from req2)
-        self.post_page(
+        req2 = self.post_page(
             GlobalVars.LOGON_SECOND_PAGE,
             data=GlobalVars.LOGIN_DATA,
             headers={'Referer':GlobalVars.LOGON_FIRST_PAGE})
         # Now we're connected.
+
+        # Create a thread that will make a request every once in a while
+        # so the session doesn't expire
+        def worker():
+            while True:
+                sleep(self.SESSION_REFRESH_INTERVAL_MIN * 60)
+                main_page = self.get_page(GlobalVars.MAIN_PAGE_LINK)
+        Thread(target=worker, name='SessionRefresher').start()
 
     def get_page(self, link):
         """ Return html of given link within session """
