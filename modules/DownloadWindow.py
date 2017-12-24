@@ -85,4 +85,4 @@ def start_download_window(root, m3u8_link, dest_file_name):
     win.after(100, update_progress)
 
     # Start in thread, to keep gui responsive
-    Thread(target=thread_worker).start()
+    Thread(target=thread_worker, name='Downloader').start()

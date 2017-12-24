@@ -64,7 +64,7 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
         self.course_list.pack(side=TK.TOP, fill=TK.BOTH, expand=1)
         course_frame.pack(side=TK.RIGHT, padx=padding, pady=padding, fill=TK.BOTH)
 
-        Thread(target=self.helper_lib.update_courses).start()
+        Thread(target=self.helper_lib.update_courses, name='CourseUpdater').start()
 
         # Bind clicks to update playlist_updater
         def playlist_updater(event): # pylint: disable=unused-argument
@@ -81,7 +81,7 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
                 return
 
             Thread(target=lambda: self.helper_lib.update_playlists(
-                self.course_list.get(curr_selection).split(':')[0])).start()
+                self.course_list.get(curr_selection).split(':')[0]), name='PlaylistUpdater').start()
 
         self.course_list.bind('<ButtonRelease-1>', playlist_updater)
         #===================== Course frame end
@@ -112,7 +112,7 @@ class MainWindow(object): # pylint: disable=too-few-public-methods
             if curr_selection == ():
                 return
             Thread(target=lambda: self.helper_lib.update_videos(
-                self.playlist_list.get(curr_selection).split(':')[0])).start()
+                self.playlist_list.get(curr_selection).split(':')[0]), name='VideosUpdater').start()
 
         self.playlist_list.bind('<ButtonRelease-1>', video_updater)
         #===================== Playlist frame end
