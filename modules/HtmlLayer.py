@@ -165,5 +165,13 @@ class HtmlHandler(object):
         # Note: This json has a lot of info about the video properties and lesson info
         response = eval(req1.replace('true', 'True'). # pylint: disable=eval-used
                         replace('false', 'False').replace('null', 'None'))
+        # Get video cipher from response
+        cipher = response['media']['cipher']
+        # Request video page from cipher
+        vid_page = cls.__net.get_page('https://opal.openu.ac.il/local/ouil_video/player.php?mediaid=' + cipher)
+        # Find the video name in the xml response (it's in the form mediaId: "<name>")
+        token1=vid_page.find('mediaId: "')+len('mediaId: "')
+        token2=vid_page[token1:].find('"')
+        vid_name=vid_page[token1:token1+token2]
 
-        return 'https://api.bynetcdn.com/Redirector/openu/manifest/' + response['media']['ar'] + '_mp4/HLS/playlist.m3u8'
+        return 'https://api.bynetcdn.com/Redirector/openu/manifest/' + vid_name + '_mp4/HLS/playlist.m3u8'
